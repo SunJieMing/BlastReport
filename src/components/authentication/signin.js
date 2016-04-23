@@ -43,7 +43,7 @@ export default class Signin extends Component {
     this.props.navigator.immediatelyResetRouteStack([{ name: 'home' }]);
   }
   onSignup() {
-    this.props.navigator.push({name: 'signup'})
+    this.props.navigator.push({name: 'signup'});
   }
 }
 
