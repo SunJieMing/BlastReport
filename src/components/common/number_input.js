@@ -10,7 +10,7 @@ import React, {
 export default class NumberInputField extends Component {
   static propTypes() {
     return {
-      value: React.PropTypes.number.isRequired,
+      value: React.PropTypes.string.isRequired,
       text: React.PropTypes.string.isRequired,
       onChangeNumber: React.PropTypes.func.isRequired
     }
@@ -26,9 +26,8 @@ export default class NumberInputField extends Component {
       </Text>
       <TextInput
         style={styles.input}
-        value={this.props.value}
-        onChangeText={this.props.onChangeText}
-        keyboardType={'numeric'}
+        value={this.props.value.toString() === '0' ? '' : this.props.value.toString()}
+        onChangeText={this.props.onChangeNumber}
         />
     </View>
   }

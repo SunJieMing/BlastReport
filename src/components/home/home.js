@@ -31,7 +31,7 @@ export default class Home extends Component {
   }
 
   createNewReport() {
-    this.props.navigator.push({name: 'newShotReportMenu'});
+    this.props.navigator.push({name: 'newShotReport'});
   }
 
   viewShotReports() {

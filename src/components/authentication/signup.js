@@ -3,10 +3,14 @@ import React, {
   View,
   Text,
   StyleSheet,
-  TextInput
-} from 'react-native';
+  TextInput,
+  AsyncStorage
+}                    from 'react-native';
+import GiftedSpinner from 'react-native-gifted-spinner';
+import Firebase      from 'firebase';
+import Button        from '../common/button';
 
-import Button from '../common/button';
+const app = new Firebase('https://blaster-reports.firebaseio.com');
 
 export default class Signup extends Component {
   constructor() {
@@ -14,7 +18,6 @@ export default class Signup extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.returnToSignin = this.returnToSignin.bind(this);
     this.state = {
-      username: '',
       email: '',
       password: '',
       passwordConfirmation: ''
@@ -24,12 +27,6 @@ export default class Signup extends Component {
   render() {
     return <View style={styles.container}>
       <Text>Sign Up</Text>
-      <Text style={styles.label}>Username:</Text>
-      <TextInput
-        style={styles.input}
-        value={this.state.username}
-        onChangeText={(text) => this.setState({username: text})}
-        />
       <Text style={styles.label}>Email:</Text>
       <TextInput
         style={styles.input}
@@ -50,7 +47,7 @@ export default class Signup extends Component {
         value={this.state.passwordConfirmation}
         onChangeText={(text) => this.setState({passwordConfirmation: text})}
         />
-      <Button text={'I already have an account...'} onPress={this.returnToSignin} />
+      <Button text={'Sign In'} onPress={this.returnToSignin} />
       <Button text={'Submit'} onPress={this.onSubmit} />
     </View>
   }
@@ -60,7 +57,29 @@ export default class Signup extends Component {
   }
 
   onSubmit() {
-    this.props.navigator.immediatelyResetRouteStack([{ name: 'home' }]);
+    app.createUser({
+      'email': this.state.email,
+      'password': this.state.password
+    }, (error, userData) => {
+      if (error) {
+        switch(error.code) {
+          case "EMAIL_TAKEN":
+            alert("The new user account cannot be created because the email is already in use.");
+          break;
+          case "INVALID_EMAIL":
+            alert("The specified email is not a valid email.");
+          break;
+          default:
+            alert("Error creating user:");
+        }
+      } else {
+        AsyncStorage.setItem('userData', JSON.stringify(userData));
+        app.child('/users').child(userData.uid).set({
+          email: this.state.email
+        });
+        this.props.navigator.immediatelyResetRouteStack([{ name: 'home' }]);
+      }
+    });
   }
 }
 
