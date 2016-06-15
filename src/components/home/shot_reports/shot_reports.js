@@ -39,7 +39,7 @@ export default class ShotReports extends Component {
   render() {
     return <View>
       <Header text={'Reports'} back={() => { this.props.navigator.pop(); }} />
-      <ScrollView style={styles.body}>
+      <ScrollView style={styles.body} alwaysBounceVertical={false} >
         {this.state.reports.map((report, i) => {
           let time = new Date(report.timestamp);
           return <Row key={i} onPress={() => {this.viewReport(report, i)}} text={new Date(report.timestamp).toString()} />
@@ -64,7 +64,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   body: {
-    flex: 9,
+    flex: 1,
+    height: 500,
     backgroundColor: '#EEEEF0'
   },
 });

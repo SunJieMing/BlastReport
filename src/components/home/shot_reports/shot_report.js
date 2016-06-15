@@ -25,7 +25,7 @@ export default class ShotReport extends Component {
 
   render() {
     return <View>
-      <Header text={'Blast Report'} back={this.goBack.bind(this)} />
+      <Header text={'Blast Report'} back={this.goBack.bind(this)} {...this.props} />
       <Text>Blast Report</Text>
     </View>;
   }

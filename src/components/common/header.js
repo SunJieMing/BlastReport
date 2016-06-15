@@ -4,45 +4,54 @@ import React, {
   StyleSheet,
   Component
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class Header extends Component {
   constructor() {
     super();
   }
+
   static propTypes() {
     return {
       text: React.propTypes.string.isRequired,
       back: React.propTypes.function
     };
   }
+
   back() {
     this.props.back();
   }
+
+  goToSettings() {
+    this.props.navigator.push({name: 'settings'});
+  }
+
   render() {
-    return <View style={styles.header}>
-      <Text style={styles.backButton} onPress={this.back.bind(this)} >Back</Text>
-      <Text style={styles.headerText} >{this.props.text}</Text>
+    return <View style={styles.toolbar}>
+      <Text style={styles.toolbarButton} onPress={this.back.bind(this)} >Back</Text>
+      <Text style={styles.toolbarTitle} >{this.props.text}</Text>
+      <Text style={styles.toolbarButton} onPress={this.goToSettings.bind(this)} >
+        <Icon name={'cog'} color={'black'} size={15} />
+      </Text>
     </View>
   }
 }
 
 const styles = StyleSheet.create({
-  headerText: {
-    color: '#DBFCFD',
-    fontSize: 30,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  header: {
-    flex: 2,
+  toolbar: {
     backgroundColor: '#2BAAED',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 20
+    paddingTop: 30,
+    paddingBottom: 10,
+    flexDirection: 'row'
   },
-  backButton: {
-    fontSize: 10,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-end'
+  toolbarButton: {
+    width: 50,
+    textAlign: 'center'
+  },
+  toolbarTitle: {
+    color: '#DBFCFD',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    flex: 1
   }
 });
